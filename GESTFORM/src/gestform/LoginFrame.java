@@ -28,7 +28,56 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         initComponents();
     }
+    private void submitLP(){
+    PreparedStatement St;
+           String login = userChamp.getText();
+           String password = mdpChamp.getText();
+           String sql;
+           ResultSet Rs;
 
+           try{ ///chaine de conection avec BD Mysql
+               // Class.forName("com.mysql.jdbc.Driver");
+                 Connection cnx = GESTFORM.mdbc.getMyConnection();
+                 //^^^^^^ ON INITIALISE LA CONNECTION PLUS HAUT Connection cnx =    DriverManager.getConnection("jdbc:mysql://82.127.32.30:3306/veyre_ppe2","root", "root"); 
+                          sql = "SELECT nLicence FROM ADHERENT WHERE username= ? AND password = ?";
+                      St = (PreparedStatement) cnx.prepareStatement(sql);
+                      St.setString(1, login);
+                      St.setString(2, password);
+                      Rs = St.executeQuery();
+                   
+                    if   (!Rs.next()) {
+                        sql = "SELECT idOrganisateur FROM ORGANISATEUR WHERE username= ? AND password = ?";
+                      St = (PreparedStatement) cnx.prepareStatement(sql);
+                      St.setString(1, login);
+                      St.setString(2, password);
+                      Rs = St.executeQuery();
+                            
+                                if   (!Rs.next()) {
+                                    infoLab.setText("echec d'autentification");
+
+                                }
+                                else {
+                                    GESTFORM.id=Rs.getString(1);
+                                    GESTFORM.org=true;
+                                    
+        this.dispose();// fermer la frame courante
+        //this.setVisible(false);// fermer la frame courante auth
+       new orgFrame().setVisible(true);// ouvre la frame principale
+   }  
+                    }
+                     else {
+                        GESTFORM.id=Rs.getString(1);
+                                    GESTFORM.org=false;
+        this.dispose();// fermer la frame courante
+        //this.setVisible(false);// fermer la frame courante auth
+       new mainFrame().setVisible(true);// ouvre la frame principale
+   }  
+    
+                          }
+                        catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "Authentification Echouer " +e.getMessage());
+                        } 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,6 +125,12 @@ public class LoginFrame extends javax.swing.JFrame {
         conButton.setBounds(170, 210, 124, 29);
         getContentPane().add(jLabel3);
         jLabel3.setBounds(130, 53, 0, 0);
+
+        mdpChamp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mdpChampActionPerformed(evt);
+            }
+        });
         getContentPane().add(mdpChamp);
         mdpChamp.setBounds(210, 180, 150, 28);
 
@@ -92,61 +147,19 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void userChampActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userChampActionPerformed
         // TODO add your handling code here:
-        
+        this.submitLP();
         
     }//GEN-LAST:event_userChampActionPerformed
 
     private void conButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conButtonActionPerformed
-PreparedStatement St = null;
-           String login = userChamp.getText();
-           String password = mdpChamp.getText();
-           String sql;
-           ResultSet Rs = null;
-            St=null;
-           try{///chaine de conection avec BD Mysql
-                 Class.forName("com.mysql.jdbc.Driver");
-                 Connection cnx =    DriverManager.getConnection("jdbc:mysql://82.127.32.30:3306/veyre_ppe2","root", "root"); 
-                          sql = "SELECT nLicence FROM ADHERENT WHERE username= ? AND password = ?";
-                      St = (PreparedStatement) cnx.prepareStatement(sql);
-                      St.setString(1, login);
-                      St.setString(2, password);
-                      Rs = St.executeQuery();
-                   
-                    if   (!Rs.next()) {
-                        sql = "SELECT idOrganisateur FROM ORGANISATEUR WHERE username= ? AND password = ?";
-                      St = (PreparedStatement) cnx.prepareStatement(sql);
-                      St.setString(1, login);
-                      St.setString(2, password);
-                      Rs = St.executeQuery();
-                            
-                                if   (!Rs.next()) {
-                                    infoLab.setText("echec d'autentification");
 
-                                }
-                                else {
-                                    GESTFORM.id=Rs.getString(1);
-                                    GESTFORM.org=true;
-                                    
-        this.dispose();// fermer la frame courante
-        //this.setVisible(false);// fermer la frame courante auth
-       new orgFrame().setVisible(true);// ouvre la frame principale
-   }  
-                    }
-                     else {
-                        GESTFORM.id=Rs.getString(1);
-                                    GESTFORM.org=false;
-        this.dispose();// fermer la frame courante
-        //this.setVisible(false);// fermer la frame courante auth
-       new mainFrame().setVisible(true);// ouvre la frame principale
-   }  
-    
-                          }
-                        catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "Authentification Echouer" +e.getMessage());
-                        }    // TODO add your handling code here:
-    }        // TODO add your handling code here:
-        
+        this.submitLP();
+      
     }//GEN-LAST:event_conButtonActionPerformed
+
+    private void mdpChampActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mdpChampActionPerformed
+this.submitLP();        // TODO add your handling code here:
+    }//GEN-LAST:event_mdpChampActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,3 +177,4 @@ PreparedStatement St = null;
     private javax.swing.JTextField userChamp;
     // End of variables declaration//GEN-END:variables
 */
+}

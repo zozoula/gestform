@@ -32,18 +32,18 @@ public class GESTFORM {
     private LoginFrame logFrame;
     public static boolean org;
     public static String id;
-        MyDBConnect mdbc;
-        Statement stmt; 
-        ResultSet rs; 
+    protected static MyDBConnect mdbc;
+    protected static Statement stmt; 
+    protected static ResultSet rs; 
 
     
     // Constructeur 
     public GESTFORM  () throws SQLException{
-      /*  mdbc=new MyDBConnect();
+        mdbc=new MyDBConnect();
         mdbc.init();
         Connection conn=mdbc.getMyConnection();
         stmt= conn.createStatement(); 
-        */
+      
         this.logFrame = new LoginFrame();
         this.logFrame.setVisible(true);
 

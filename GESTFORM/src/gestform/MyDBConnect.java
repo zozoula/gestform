@@ -10,7 +10,7 @@ import java.sql.*;
 
 /**
  *
- * @author noniko
+ * @author aNToNy
  */
 public class MyDBConnect {
    
@@ -28,9 +28,7 @@ public class MyDBConnect {
        try{
         
         Class.forName("com.mysql.jdbc.Driver");
-        myConnection=DriverManager.getConnection(
-                "jdbc:mysql://localhost/veyre_ppe2","root", "root"
-                );
+        myConnection=DriverManager.getConnection("jdbc:mysql://82.127.32.30:3306/veyre_ppe2","root", "root");
         }
         catch(Exception e){
             System.out.println("Failed to get connection");
